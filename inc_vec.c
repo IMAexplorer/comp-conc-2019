@@ -32,6 +32,7 @@ int main(int argc, char const *argv[]) {
   // cria um vetor com duas threads
   pthread_t inc_threads[NTHREADS];
   int i,t;
+  inc_args *arg;
   // vector com números
   int vetor[50];
   // popula o vetor

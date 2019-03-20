@@ -14,7 +14,7 @@ typedef struct {
 
 // função que irá incrementar
 void *inc_vector(void *args) {
-  printf("thread iniciada\n");
+  //printf("thread iniciada\n");
   // faz o cast
   inc_args *vec_args = (inc_args*) args;
   int size = vec_args->size;
@@ -46,10 +46,13 @@ int main(int argc, char const *argv[]) {
     vetor[i] = i;
 
   // imprime os primeiros itens
-  printf("ANTES\n");
-  for (i = 0; i < VECTORSIZE; i++)
-    printf("item %d - %d\n", i, vetor[i]);
+  /*printf("ANTES\n");
 
+  for (i = 0; i < VECTORSIZE; i++){
+    printf("item %d - %d\n", i, vetor[i]);
+  }*/
+
+  printf("\n");
   // aloca argumentos e cria threads
   for(t=0; t < NTHREADS; t++) {
    // aloca a memória para os argumentos
@@ -60,11 +63,11 @@ int main(int argc, char const *argv[]) {
     }
 
     // passa os argumentos
-    arg->size = (int)(VECTORSIZE/NTHREADS);
+    arg->size = ((int)VECTORSIZE)/NTHREADS;  // cada thread pega uma parte do vetor
     arg->addr = vetor + (t * arg->size);
     // cria as threads
 
-    printf("cria thread %d\n", t+1);
+    //printf("cria thread %d\n", t+1);
 
     if (pthread_create(&inc_threads[t], NULL, inc_vector, (void*) arg)){
       printf("ERRO: pthread_create()\n"); exit(-1);
@@ -78,12 +81,13 @@ int main(int argc, char const *argv[]) {
     }
   }
 
-  printf("DEPOIS\n");
+  /*printf("DEPOIS\n");
   // imprime novos valores do vetor
-  for (i = 0; i < VECTORSIZE; i++)
+  for (i = 0; i < VECTORSIZE; i++){
     printf("item %d - %d\n", i, vetor[i]);
+  }*/
 
-  printf("Thread principal terminou\n");
+  //printf("Thread principal terminou\n");
 
   return 0;
 }

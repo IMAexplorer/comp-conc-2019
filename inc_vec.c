@@ -14,6 +14,7 @@ typedef struct {
 
 // função que irá incrementar
 void *inc_vector(void *args) {
+  printf("thread iniciada\n");
   // faz o cast
   inc_args *vec_args = (inc_args*) args;
   // inteiro para loop
@@ -34,14 +35,18 @@ int main(int argc, char const *argv[]) {
   int i,t;
   inc_args *arg;
   // vector com números
-  int vetor[50];
+  int vetor[VECTORSIZE];
   // popula o vetor
   for ( i = 0; i < VECTORSIZE; i++ )
     vetor[i] = i;
 
+  // imprime os primeiros itens
+  for (i = 0; i < 10; i++)
+    printf("item %d - %d\n", i, vetor[i]);
+
   // aloca argumentos e cria threads
   for(t=0; t < NTHREADS; t++) {
-    // aloca a memória para os argumentos
+   // aloca a memória para os argumentos
     arg = malloc(sizeof(inc_args));
     if (arg == NULL)
       printf("--ERRO: malloc()\n"); exit(-1);
@@ -54,6 +59,18 @@ int main(int argc, char const *argv[]) {
       printf("ERRO: pthread_create()\n"); exit(-1);
 
   }
+
+  for (i = 0; i < NTHREADS; i++) {
+    if (pthread_join(inc_threads[i], NULL)) {
+      printf("Erro: pthread_join \n"); exit(-1);
+    }
+  }
+
+  // imprime novos valores do vetor
+  for (i = 0; i < VECTORSIZE; i++)
+    printf("item %d - %d\n", i, vetor[i]);
+
+  printf("Thread principal terminou\n");
 
   return 0;
 }

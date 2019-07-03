@@ -1,0 +1,5 @@
+1 threads cons - 0.004 s
+2 threads cons - 0.005 s
+3 threads cons - 0.003 s
+4 threads cons - 0.002 s
+5 threads cons - 0.003 s
